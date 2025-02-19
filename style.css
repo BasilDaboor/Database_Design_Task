@@ -101,9 +101,8 @@ form input, form select {
     
 }
 #form-actions {
-    background-color: #222;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     align-items: center;
 }
 form button {

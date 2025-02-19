@@ -121,7 +121,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"  && isset($_POST['addInstructors'])) {
             <section id="enrollments">
                 <h2>Add Enrollment</h2>
                 <form>
-                    <input type="number" placeholder="Student ID" required>
+
+                    <select name="studentName">
+                        <option value="" disabled selected>Student Name</option>
+                        <?php
+                        $sql = "SELECT * FROM students";
+                        $stmt = $pdo->query($sql);
+                        while ($row = $stmt->fetch()) {
+                            echo "<option value='" . $row['id'] . "'>" . $row['first_name'] . " " . $row['last_name'] . "</option>";
+                        }
+
+                        ?>
+                    </select>
+
+
+                    <!-- <input type="number" placeholder="Student ID" required> -->
                     <input type="number" placeholder="Course ID" required>
                     <input type="text" placeholder="Grade">
                     <button type="submit">Add Enrollment</button>
