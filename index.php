@@ -37,6 +37,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"  && isset($_POST['addInstructors'])) {
     exit;
 }
 
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['addEnrollments'])) {
+    $studentId = $_POST['studentId'];
+    $courseId = $_POST['courseId'];
+    $grade = $_POST['grade'];
+    $message = addEnrollment($pdo, $studentId, $courseId, $grade);
+
+    // Redirect to the same page to avoid form resubmission issues
+    header("Location: " . $_SERVER['PHP_SELF']);
+    exit;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -87,7 +97,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"  && isset($_POST['addInstructors'])) {
                     <input name="studentEnrollment" type="number" placeholder="Enrollment Year" required>
                     <div id="form-actions">
                         <button name="addStudent" type="submit">Add Student</button>
-                        <a href="displayStu.php"> Show Students </a>
+                        <a class="displayData" href="students/displayStu.php"> Show Students </a>
                     </div>
                 </form>
             </section>
@@ -100,7 +110,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"  && isset($_POST['addInstructors'])) {
                     <input name="courseCode" type="text" placeholder="Course Code" required>
                     <input name="Credits" type="number" placeholder="Credits" required>
                     <input name="Department" type="text" placeholder="Department" required>
-                    <button name="addCourse" type="submit">Add Course</button>
+
+                    <div id="form-actions">
+                        <button name="addCourse" type="submit">Add Course</button>
+
+                        <a class="displayData" href="courses/displayCourses.php"> Show Course</a>
+                    </div>
+
                 </form>
             </section>
 
@@ -113,34 +129,53 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"  && isset($_POST['addInstructors'])) {
                     <input name="instructorEmail" type="email" placeholder="Email" required>
                     <input name="instructorHireDate" type="date" placeholder="Hire Date" required>
                     <input name="instructorDepartment" type="text" placeholder="Department" required>
-                    <button name="addInstructors" type="submit">Add Instructor</button>
+
+
+                    <div id="form-actions">
+                        <button name="addInstructors" type="submit">Add Instructor</button>
+                        <a class="displayData" href="instructors/displayinstructors.php"> Show Instructor</a>
+                    </div>
                 </form>
             </section>
 
             <!-- Enrollments Form -->
             <section id="enrollments">
                 <h2>Add Enrollment</h2>
-                <form>
-
-                    <select name="studentName">
+                <form action="index.php" method="POST">
+                    <select name="studentId">
                         <option value="" disabled selected>Student Name</option>
                         <?php
                         $sql = "SELECT * FROM students";
                         $stmt = $pdo->query($sql);
                         while ($row = $stmt->fetch()) {
-                            echo "<option value='" . $row['id'] . "'>" . $row['first_name'] . " " . $row['last_name'] . "</option>";
+                            echo "<option value='" . $row['student_id'] . "'>" . $row['first_name'] . " " . $row['last_name'] . "</option>";
                         }
-
                         ?>
                     </select>
 
+                    <select name="courseId">
+                        <option value="" disabled selected>Course Name</option>
+                        <?php
+                        $sql = "SELECT * FROM courses";
+                        $stmt = $pdo->query($sql);
+                        while ($row = $stmt->fetch()) {
+                            echo "<option value='" . $row['course_id'] . "'>" . $row['course_name'] . "</option>";
+                        }
+                        ?>
+                    </select>
 
-                    <!-- <input type="number" placeholder="Student ID" required> -->
-                    <input type="number" placeholder="Course ID" required>
-                    <input type="text" placeholder="Grade">
-                    <button type="submit">Add Enrollment</button>
+                    <select name="grade" id="">
+                        <option value="" disabled selected>Grade</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                        <option value="D">D</option>
+                        <option value="F">F</option>
+                    </select>
+                    <button name="addEnrollments" type="submit">Add Enrollment</button>
                 </form>
             </section>
+
 
             <!-- Course Assignments Form -->
             <section id="assignments">

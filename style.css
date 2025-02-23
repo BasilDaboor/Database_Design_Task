@@ -96,9 +96,18 @@ form input, form select {
     border: 1px solid #ccc;
     border-radius: 5px;
 }
-#form-actions a{
+.displayData{
     text-decoration: none;
-    
+    padding: 8px 10px;
+    border: 1px solid #007bff;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    transition: .4s;
+}
+.displayData:hover {
+    background: #0056b3;
 }
 #form-actions {
     display: flex;
@@ -112,6 +121,8 @@ form button {
     padding: 10px;
     border-radius: 5px;
     cursor: pointer;
+    transition: .4s;
+
 }
 
 form button:hover {
